@@ -1,10 +1,10 @@
-import { useEffect } from "react"
+
+import clsx from "clsx"
 import {
   Table,
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -13,24 +13,26 @@ import { useEnterprise } from "../../../shared/context/EnterpriseContext"
 
 export const TableInfo = () => {
 
-  const {enterprise} = useEnterprise()
+  const { enterprise, updateEnterpriseStatus, formatStatus } = useEnterprise()
 
-  useEffect(() => {
-    console.log('table clg', enterprise)
-  }, [])
+  const formatCuit = (cuit: string | number) => {
+    const str = String(cuit).padStart(11, "0")
+    return `${str.slice(0, 2)}-${str.slice(2, 10)}-${str.slice(10)}`
+  }
 
   return (
     <section>
       <div className="flex justify-between p-5">
         <h1>Inspecciones</h1>
-        <button className="cursor-pointer p-1 pr-3 pl-3 rounded-sm bg-green-300"> + </button>
+        <button className="cursor-pointer p-1 pr-3 pl-3 rounded-sm bg-green-300"> 4</button>
       </div>
       <Table>
         <TableCaption className="mb-5">Tabla que muestra una lista con detalles de las inspecciones.</TableCaption>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Cuit</TableHead>
+          <TableRow >
             <TableHead>Nombre de la empresa</TableHead>
+            <TableHead className="w-[100px]">Cuit</TableHead>
+            <TableHead>Número de empresa</TableHead>
             <TableHead>Estado</TableHead>
             <TableHead className="text-center">Fecha</TableHead>
           </TableRow>
@@ -38,18 +40,28 @@ export const TableInfo = () => {
         <TableBody>
           {enterprise.map((obj) => (
             <TableRow key={obj.id}>
-              <TableCell className="font-medium">{obj.cuit}</TableCell>
               <TableCell>{obj.name}</TableCell>
-              <TableCell>{obj.status}</TableCell>
+              <TableCell className="font-md">{formatCuit(obj.cuit)}</TableCell>
+              <TableCell>{obj.id}</TableCell>
+              <TableCell className={clsx(
+                "w-[160px] max-w-[160px] p-1",
+                "cursor-pointer",
+                {
+                  "text-yellow-600 bg-yellow-100 font-medium rounded-sm m-10": obj.status === "waiting",
+                  "text-green-600 bg-green-100 font-semibold": obj.status === "completed",
+                  "text-red-600 bg-red-100 font-medium": obj.status === "uncompleted",
+                }
+              )} onClick={() => updateEnterpriseStatus(obj.id)}>{formatStatus(obj.status)}</TableCell>
+              <TableCell className="text-center">
+                {new Date(obj.date).toLocaleDateString("es-AR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
     </section>
   )

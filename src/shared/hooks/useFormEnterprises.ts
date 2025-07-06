@@ -1,5 +1,5 @@
 // useFormEnterprises.ts
-import { useForm } from "react-hook-form"
+import { useForm, type UseFormProps } from "react-hook-form"
 
 export enum enterpriseStatus {
   waiting = "waiting",
@@ -13,20 +13,35 @@ export interface IFormInput {
   city: string
   name: string
   status: enterpriseStatus
+  date: string
 }
+export const useFormEnterprises = (options?: UseFormProps<IFormInput>) => {
+  const today = new Date().toISOString().split("T")[0] 
 
-export const useFormEnterprises = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IFormInput>()
+    setValue,
+    watch,
+    getValues,
+  } = useForm<IFormInput>({
+    defaultValues: {
+      date: today,
+    },
+    ...options,
+  })
 
   return {
     register,
     handleSubmit,
     errors,
     reset,
+    setValue,
+    watch,
+    getValues,
   }
 }
+
+
