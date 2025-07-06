@@ -1,0 +1,17 @@
+{
+  "files": ["custom.d.ts"],
+  "references": [
+    {"path": "./tsconfig.app.json" },{"path": "./tsconfig.node.json"}
+  ],
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  
+}
