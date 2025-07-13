@@ -26,7 +26,7 @@ export function DialogAddInspection() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-green-400 hover:bg-green-400 cursor-pointer">Agregar inspección</Button>
+        <Button variant="outline" className="bg-green-200 hover:bg-green-300 cursor-pointer border-none text-green-600 font-bold text-md">Agregar inspección</Button>
       </DialogTrigger>
       <DialogContent className="sm:w-[600px]">
         <DialogTitle>Agregar</DialogTitle>
@@ -46,7 +46,13 @@ export function DialogAddInspection() {
           <p className="text-red-500">{errors.cuit?.message}</p>
 
           <label className="text-md pb-2 pt-2 font-bold">Número de la empresa</label>
-          <input type="number" className="border-1 p-2 rounded-md [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none" {...register("id", { required: 'Este campo es obligatorio.' })} />
+          <input type="number" className="border-1 p-2 rounded-md [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none" {...register("id", { 
+            required: 'Este campo es obligatorio.',
+            pattern: {
+              value: /^\d{7,8}$/,
+              message: "El Nº de empresa debe contener 7 u 8 números.",
+            },
+            })} />
           <p className="text-red-500">{errors.id?.message}</p>
 
           <label className="text-md pb-2 pt-2 font-bold">Localidad</label>

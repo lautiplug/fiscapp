@@ -1,68 +1,100 @@
-
-import clsx from "clsx"
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../../components/ui/table"
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  flexRender,
+} from "@tanstack/react-table"
 import { useEnterprise } from "../../../shared/context/EnterpriseContext"
+import { getColumns } from "../hooks/columns"
+import { useState, type FC, type SVGProps } from "react"
+import { isInspectionOverdue } from "../../../shared/utils/overdueEnterprises"
+import AlertIcon from '../../../icons/svg/alert.svg?react';
+
+type Icons = {
+  iconSVG: FC<SVGProps<SVGSVGElement>>;
+}
+
+const alertIcon: Icons = { iconSVG: AlertIcon }
+
 
 export const TableInfo = () => {
-
+  const AlertIcon = alertIcon.iconSVG
   const { enterprise, updateEnterpriseStatus, formatStatus } = useEnterprise()
+  const [globalFilter, setGlobalFilter] = useState("")
+  const [pageIndex, setPageIndex] = useState(0)
+  const [pageSize, setPageSize] = useState(9)
 
-  const formatCuit = (cuit: string | number) => {
-    const str = String(cuit).padStart(11, "0")
-    return `${str.slice(0, 2)}-${str.slice(2, 10)}-${str.slice(10)}`
-  }
+  const table = useReactTable({
+    data: enterprise,
+    columns: getColumns(updateEnterpriseStatus, formatStatus),
+    state: {
+      globalFilter,
+      pagination: { pageSize, pageIndex }
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: updater => {
+      const newState = typeof updater === "function" ? updater({ pageIndex, pageSize }) : updater
+      setPageIndex(newState.pageIndex)
+      setPageSize(newState.pageSize)
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  })
+
+  const currentRows = table.getRowModel().rows;
+  const currentOverdueCount = currentRows.filter(row => isInspectionOverdue(row.original)).length;
 
   return (
-    <section>
-      <div className="flex justify-between p-5">
-        <h1>Inspecciones</h1>
-        <button className="cursor-pointer p-1 pr-3 pl-3 rounded-sm bg-green-300"> 4</button>
+    <section className="border-0">
+      <div className="flex justify-between items-center p-1">
+        <div className="flex items-center gap-4">
+          <h1 className="text-xl font-bold">Inspecciones</h1>
+          {
+            currentOverdueCount > 0 ?
+              <div className="text-sm bg-yellow-100 p-1 rounded-md pr-2 pl-2 flex items-center gap-2 font-bold">
+                <AlertIcon width={'24px'} height={'24px'} /> Hay {currentOverdueCount} empresa{currentOverdueCount > 1 && `s`} que requiere{currentOverdueCount > 1 && `n`} seguimiento.
+              </div>
+              : null
+          }
+        </div>
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={globalFilter ?? ""}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className="border p-2 rounded-md focus:outline-none"
+        />
       </div>
-      <Table>
-        <TableCaption className="mb-5">Tabla que muestra una lista con detalles de las inspecciones.</TableCaption>
-        <TableHeader>
-          <TableRow >
-            <TableHead>Nombre de la empresa</TableHead>
-            <TableHead className="w-[100px]">Cuit</TableHead>
-            <TableHead>Número de empresa</TableHead>
-            <TableHead>Estado</TableHead>
-            <TableHead className="text-center">Fecha</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {enterprise.map((obj) => (
-            <TableRow key={obj.id}>
-              <TableCell>{obj.name}</TableCell>
-              <TableCell className="font-md">{formatCuit(obj.cuit)}</TableCell>
-              <TableCell>{obj.id}</TableCell>
-              <TableCell className={clsx(
-                "w-[160px] max-w-[160px] p-1",
-                "cursor-pointer",
-                {
-                  "text-yellow-600 bg-yellow-100 font-medium rounded-sm m-10": obj.status === "waiting",
-                  "text-green-600 bg-green-100 font-semibold": obj.status === "completed",
-                  "text-red-600 bg-red-100 font-medium": obj.status === "uncompleted",
-                }
-              )} onClick={() => updateEnterpriseStatus(obj.id)}>{formatStatus(obj.status)}</TableCell>
-              <TableCell className="text-center">
-                {new Date(obj.date).toLocaleDateString("es-AR", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                })}
-              </TableCell>
-            </TableRow>
+
+      <table className="mt-2 w-full border-collapse text-center overflow-hidden">
+        <thead>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => (
+                <th key={header.id} className="p-2 text-center text-sm text-gray-500 font-normal bg-gray-100">
+                  {flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
+              ))}
+            </tr>
           ))}
-        </TableBody>
-      </Table>
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map(row => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map(cell => (
+                <td key={cell.id} className={`text-center cursor-pointer p-2 border-b`}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+     
     </section>
   )
 }

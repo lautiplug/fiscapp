@@ -54,7 +54,7 @@ export const useGetEnterprisesHeader = () => {
       title: 'Expiradas',
       inspectionsCount: 20, // do logic
       lastDate: 'Último mes',
-      averagePercentage: -21,
+      averagePercentage: 0,
       inspectionStatus: 'Expirada'
     },
   ];
