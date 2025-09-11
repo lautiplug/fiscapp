@@ -23,7 +23,7 @@ export const DialogAddReminder = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className=" bg-green-200 hover:bg-green-300 cursor-pointer border-none text-green-600 font-bold text-md"> + Recordatorio</Button>
+        <Button variant="outline" className="cursor-pointer  text-gray-700 border-gray-300 font-bold text-md"> Añadir + </Button>
       </DialogTrigger>
       <DialogContent className="sm:w-[600px]">
         <DialogTitle>Agregar Recordatorio</DialogTitle>

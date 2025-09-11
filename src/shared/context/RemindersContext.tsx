@@ -6,7 +6,7 @@ const ReminderContext = createContext<ReturnType<typeof useAddReminders> | null>
 
 export const ReminderProvider = ({ children }: { children: React.ReactNode }) => {
   const value = useAddReminders();
-  return <ReminderContext.Provider value={value}>{children}</ReminderContext.Provider>;
+  return <ReminderContext.Provider value={value}> {children} </ReminderContext.Provider>;
 };
 
 export const useRemindersContext = () => {

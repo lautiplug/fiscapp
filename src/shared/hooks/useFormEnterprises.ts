@@ -5,6 +5,7 @@ export enum enterpriseStatus {
   waiting = "waiting",
   completed = "completed",
   uncompleted = "uncompleted",
+  expired = "expired"
 }
 
 export interface IFormInput {
@@ -17,7 +18,7 @@ export interface IFormInput {
 }
 
 export const useFormEnterprises = (options?: UseFormProps<IFormInput>) => {
-  const today = new Date().toISOString().split("T")[0] 
+  const today = new Date().toISOString().split("T")[0]
 
   const {
     register,

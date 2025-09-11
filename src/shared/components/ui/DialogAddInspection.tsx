@@ -26,7 +26,7 @@ export function DialogAddInspection() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-green-200 hover:bg-green-300 cursor-pointer border-none text-green-600 font-bold text-md">Agregar inspección</Button>
+        <Button variant="outline" className="cursor-pointer text-gray-700 border-gray-300 font-bold text-md">Añadir inspección</Button>
       </DialogTrigger>
       <DialogContent className="sm:w-[600px]">
         <DialogTitle>Agregar</DialogTitle>
@@ -76,7 +76,7 @@ export function DialogAddInspection() {
             <option value="uncompleted">No se localizó</option>
           </select>
           <p className="text-red-500">{errors.status?.message}</p>
-          <button className="p-2 bg-green-500 text-white mt-5 rounded-md cursor-pointer" type="submit">Agregar</button>
+          <button className="p-2 bg-green-500 text-white mt-5 rounded-md cursor-pointer" type="submit">Añadir</button>
         </form>
       </DialogContent>
     </Dialog>

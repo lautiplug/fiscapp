@@ -21,13 +21,18 @@ export const getColumns = (updateEnterpriseStatus: (id: number) => void, formatS
       const name = info.getValue() as string;
 
       return (
-        <div className="flex items-center gap-4 ">
+        <div className="flex items-center gap-2 max-w-[220px]">
           {isInspectionOverdue(row) && (
-            <div className="text-sm bg-yellow-200 p-1 w-fit flex items-center rounded-sm">
-              <AlertIcon width={'24px'} height={'24px'}/>
+            <div className="text-sm bg-yellow-200 p-1 w-fit flex items-center rounded-sm shrink-0">
+              <AlertIcon width={20} height={20} />
             </div>
           )}
-          <span>{name}</span>
+          <span
+            className="truncate whitespace-nowrap overflow-hidden text-ellipsis"
+            title={name}   
+          >
+            {name}
+          </span>
         </div>
       );
     },
@@ -58,7 +63,7 @@ export const getColumns = (updateEnterpriseStatus: (id: number) => void, formatS
     header: "Estado",
     cell: ({ row }) => {
       const formatted = formatStatus(row.original.status)
-      const statusStyle = {
+      const statusStyle:any = {
         waiting: "m-auto text-gray-600 bg-gray-100 font-md",
         completed: "m-auto text-green-500 bg-green-100 font-md",
         uncompleted: "m-auto text-red-500 bg-red-100 font-md",
@@ -81,6 +86,7 @@ export const getColumns = (updateEnterpriseStatus: (id: number) => void, formatS
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
+        timeZone: 'UTC'
       })
     },
   },

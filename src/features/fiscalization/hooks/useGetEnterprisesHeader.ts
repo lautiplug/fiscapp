@@ -1,3 +1,4 @@
+
 import { useEnterprise } from "../../../shared/context/EnterpriseContext";
 import { enterpriseStatus } from "../../../shared/hooks/useFormEnterprises";
 import { useGetMonthlyStats } from "./useGetMonthlyStats";
@@ -11,6 +12,7 @@ interface enterpriseSkeletonHeader {
 }
 
 export const useGetEnterprisesHeader = () => {
+
 
   const { enterprise } = useEnterprise()
   const {
@@ -49,14 +51,7 @@ export const useGetEnterprisesHeader = () => {
         previousMonthStats[enterpriseStatus.uncompleted]
       ),
       inspectionStatus: 'No completada'
-    },
-    {
-      title: 'Expiradas',
-      inspectionsCount: 20, // do logic
-      lastDate: 'Último mes',
-      averagePercentage: 0,
-      inspectionStatus: 'Expirada'
-    },
+    }
   ];
 
   return {

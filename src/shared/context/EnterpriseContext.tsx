@@ -82,7 +82,7 @@ export const EnterpriseProvider = ({ children }: { children: React.ReactNode }) 
       case "completed":
         return "Completada"
       case "uncompleted":
-        return "No se localizó"
+        return "No se completó"
       default:
         return status
     }

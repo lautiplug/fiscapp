@@ -1,0 +1,126 @@
+import { Popover, PopoverArrow, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+
+import { useRemindersContext } from "../../../shared/context/RemindersContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "../../../components/ui/button";
+import { DialogAddReminder } from "../../../shared/components/ui/DialogAddReminder";
+
+export const Reminders = () => {
+  const { reminder, onDeleteReminder, onCompleteReminder, onUndoReminder } =
+    useRemindersContext();
+
+  const bgByPriority = (p: string) =>
+    p === "Alta" ? "bg-red-100" : p === "Media" ? "bg-yellow-100" : "bg-blue-100";
+
+  const priorityOrder: Record<string, number> = {
+    Alta: 3,
+    Media: 2,
+    Baja: 1,
+  };
+
+  const sorted = [...reminder].sort(
+    (a, b) => priorityOrder[b.priority] - priorityOrder[a.priority]
+  );
+
+  return (
+    <div className="flex flex-col items-right w-full p-2">
+      <div className="flex justify-between items-center mb-4">
+        <p>Recordatorios</p>
+        <DialogAddReminder />
+      </div>
+
+      <AnimatePresence mode="popLayout">
+        {sorted.map((r) => {
+          const completed = !!r.completed;
+
+          return (
+            <motion.div
+              key={r.id}
+              layout // 🔥 anima cambios de orden
+              initial={{ opacity: 0, y: 8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.97 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className={`flex justify-between items-center p-2 rounded-md mb-3 ${bgByPriority(
+                r.priority
+              )} ${completed ? "opacity-70" : ""}`}
+            >
+              <label
+                htmlFor={`rem-${r.id}`}
+                className="flex items-center gap-2 cursor-pointer flex-1"
+              >
+                <input
+                  id={`rem-${r.id}`}
+                  type="checkbox"
+                  className="w-5 h-5 mr-2 cursor-pointer accent-white"
+                  checked={completed}
+                  onChange={(e) => onCompleteReminder(r.id, e.target.checked)}
+                />
+                <div>
+                  <h1
+                    className={`${completed ? "line-through font-black text-sm" : "font-black text-sm"
+                      }`}
+                  >
+                    {r.title}
+                  </h1>
+                  <p className="text-xs lowercase first-letter:uppercase">
+                    prioridad: {r.priority}
+                  </p>
+                </div>
+              </label>
+
+              {completed ? (
+                <button
+                  onClick={() => onUndoReminder(r.id)}
+                  className="text-sm bg-white text-black rounded-md px-2 py-1 cursor-pointer"
+                  title="Deshacer"
+                >
+                  Deshacer
+                </button>
+              ) : (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="h-8 w-8 p-0 text-xl font-bold bg-transparent hover:bg-transparent border-0 shadow-none cursor-pointer"
+                      title="Acciones"
+                    >
+                      ⋮
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" className="w-56 bg-white p-0 rounded-md mt-2 shadow-md z-10 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0  data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2">
+                  <PopoverArrow width={15} height={8} className="fill-white stroke-white" />
+                    <div className="flex flex-col">
+                      <div className="px-3 py-2">
+                        <h4 className="text-sm font-medium">Acciones</h4>
+                      </div>
+
+                      <div className="border-t" />
+
+                      <button
+                        type="button"
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                      // onClick={/* tu handler de Editar */}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        type="button"
+                        className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                      onClick={() => onDeleteReminder(r.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+
+              )}
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+    </div>
+  );
+};

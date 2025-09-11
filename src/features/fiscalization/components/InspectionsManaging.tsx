@@ -2,10 +2,17 @@ import { DialogAddInspection } from "../../../shared/components/ui/DialogAddInsp
 import { useGetEnterprisesHeader } from "../hooks/useGetEnterprisesHeader";
 import ArrowDown from '../../../icons/svg/arrow-down.svg?react';
 import ArrowUp from '../../../icons/svg/arrow-up.svg?react';
+import { toZonedTime, format } from "date-fns-tz";
+
 
 export const InspectionsManaging = () => {
 
   const { inspectionResume } = useGetEnterprisesHeader()
+
+  const timeZone = "America/Argentina/Buenos_Aires";
+  const zonedDate = toZonedTime(new Date(), timeZone);
+  const formattedDay = format(zonedDate, "dd/MM/yyyy");
+  const formattedHour = format(zonedDate, 'HH:mm')
 
   return (
     <section className="p-5">
@@ -13,7 +20,7 @@ export const InspectionsManaging = () => {
         <div className="flex flex-col">
           <h1 className="text-xl font-extrabold">Performance inspecciones</h1>
           <p className="text-gray-400 text-sm">
-            7 de julio, <span className="text-black font-bold text-sm">11:11 am.</span>
+            {formattedDay}, <strong className="text-black">{formattedHour}</strong>
           </p>
         </div>
         <div>
@@ -21,12 +28,12 @@ export const InspectionsManaging = () => {
         </div>
       </div>
 
-      <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-5">
+      <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5">
         {
           inspectionResume.map((insp, index) => (
             <div
               key={index}
-              className={`${insp.title === "Expiradas" ? 'border-r-0 flex flex-col p-3 pl-3 gap-5 border-t-1' : `flex flex-col p-3 pl-3 gap-5 border-t-1 border-r-1`}`}
+              className={'border-1 flex flex-col p-3 pl-3 gap-5</section>'}
             >
               <div className="flex items-center justify-between gap-4">
                 <h1 className="lg:text-sm font-semibold">

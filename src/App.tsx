@@ -1,10 +1,10 @@
 
-import { InspectionsManaging } from "./features/fiscalizacion/components/InspectionsManaging"
-import { SidebarView } from "./features/fiscalizacion/components/SidebarView"
+import { InspectionsManaging } from "./features/fiscalization/components/InspectionsManaging"
+import { SidebarView } from "./features/fiscalization/components/SidebarView"
 import { Navbar } from "./shared/components/layout/Navbar"
-import { TableInfo } from "./features/fiscalizacion/components/Table"
+import { TableInfo } from "./features/fiscalization/components/Table"
 import { EnterpriseProvider } from "./shared/context/EnterpriseContext"
-import { Reminders } from "./features/fiscalizacion/components/Reminders"
+import { Reminders } from "./features/fiscalization/components/Reminders"
 import { ReminderProvider } from "./shared/context/RemindersContext"
 
 export const App = () => {
@@ -16,9 +16,8 @@ export const App = () => {
           backgroundImage: `
         radial-gradient(circle at center, #d1f9de, transparent)
       `,
-          backgroundRepeat: "no-repeat",
-        }}
-      >
+          backgroundRepeat: "no-repeat"
+        }}>
         <section className="row-span-7 w-70 ">
           <SidebarView />
         </section>
@@ -35,7 +34,7 @@ export const App = () => {
           <TableInfo />
         </div>
 
-        <div className="col-span-2 row-span-5 col-start-5 border-2 bg-gray-50">
+        <div className="col-span-2 row-span-5 col-start-5 mr-2 bg-white shadow-md rounded-md p-2">
           <ReminderProvider>
             <Reminders />
           </ReminderProvider>
