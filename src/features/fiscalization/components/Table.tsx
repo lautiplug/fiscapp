@@ -5,6 +5,8 @@ import { isInspectionOverdue } from "../../../shared/utils/overdueEnterprises"
 import AlertIcon from '../../../icons/svg/alert.svg?react';
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
 import { AnimatePresence } from "framer-motion";
+import { DialogAddInspection } from "../../../shared/components/ui/DialogAddInspection";
+import { type IFormInput } from "../../../shared/hooks/useFormEnterprises";
 
 
 type Icons = {
@@ -16,14 +18,25 @@ const alertIcon: Icons = { iconSVG: AlertIcon }
 
 export const TableInfo = () => {
   const AlertIcon = alertIcon.iconSVG
-  const { enterprise, updateEnterpriseStatus, formatStatus } = useEnterprise()
+  const { enterprise, updateEnterpriseStatus, formatStatus, deleteEnterprise } = useEnterprise()
   const [globalFilter, setGlobalFilter] = useState("")
   const [pageIndex, setPageIndex] = useState(0)
   const [pageSize, setPageSize] = useState(9)
+  const [editingEnterprise, setEditingEnterprise] = useState<IFormInput | null>(null)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+
+  const handleEditEnterprise = (enterpriseData: IFormInput) => {
+    setEditingEnterprise(enterpriseData)
+    setIsEditDialogOpen(true)
+  }
+
+  const handleDeleteEnterprise = (id: number) => {
+    deleteEnterprise(id)
+  }
 
   const table = useReactTable({
     data: enterprise,
-    columns: getColumns(updateEnterpriseStatus, formatStatus),
+    columns: getColumns(updateEnterpriseStatus, formatStatus, handleEditEnterprise, handleDeleteEnterprise),
     state: {
       globalFilter,
       pagination: { pageSize, pageIndex }
@@ -65,7 +78,7 @@ export const TableInfo = () => {
           />
         </div>
 
-        <table className="mt-2 w-full border-collapse text-center overflow-hidden">
+        <table className="mt-2 w-full border-collapse text-center  overflow-hidden">
             <thead>
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
@@ -89,6 +102,18 @@ export const TableInfo = () => {
               ))}
             </tbody>
         </table>
+        
+        <DialogAddInspection 
+          editData={editingEnterprise || undefined}
+          open={isEditDialogOpen}
+          onOpenChange={(open) => {
+            setIsEditDialogOpen(open)
+            if (!open) {
+              setEditingEnterprise(null)
+            }
+          }}
+          trigger={<div style={{ display: 'none' }} />}
+        />
       </section>
     </AnimatePresence>
   )

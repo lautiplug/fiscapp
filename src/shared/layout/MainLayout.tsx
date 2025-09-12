@@ -1,0 +1,47 @@
+import type { ReactNode } from "react"
+import { InspectionsManaging } from "../../features/fiscalization/components/InspectionsManaging"
+import { SidebarView } from "../../features/fiscalization/components/SidebarView"
+import { Navbar } from "../components/layout/Navbar"
+import { TableInfo } from "../../features/fiscalization/components/Table"
+import { Reminders } from "../../features/fiscalization/components/Reminders"
+import { ReminderProvider } from "../context/RemindersContext"
+
+interface MainLayoutProps {
+  children?: ReactNode
+}
+
+export const MainLayout = ({ children }: MainLayoutProps) => {
+  return (
+    <main className="w-full h-screen grid grid-cols-5 grid-rows-[80px_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 pr-10 pb-5 bg-white"
+      style={{
+        backgroundImage: `
+        radial-gradient(circle at center, #d1f9de, transparent)
+      `,
+        backgroundRepeat: "no-repeat"
+      }}>
+      <section className="row-span-7 w-65 ">
+        <SidebarView />
+      </section>
+
+      <div className="w-full col-span-4">
+        <Navbar />
+      </div>
+
+      <div className="col-span-4 col-start-2 bg-white shadow-sm rounded-md">
+        <InspectionsManaging />
+      </div>
+
+      <div className="col-span-3 row-span-5 col-start-2 bg-white shadow-md rounded-md overflow-y-scroll p-2 min-h-0">
+        <TableInfo />
+      </div>
+
+      <div className="col-span-2 row-span-5 col-start-5 mr-2 bg-white shadow-md rounded-md p-2">
+        <ReminderProvider>
+          <Reminders />
+        </ReminderProvider>
+      </div>
+
+      {children}
+    </main>
+  )
+} 

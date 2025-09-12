@@ -1,27 +1,22 @@
+
 import { DialogAddInspection } from "../../../shared/components/ui/DialogAddInspection";
 import { useGetEnterprisesHeader } from "../hooks/useGetEnterprisesHeader";
 import ArrowDown from '../../../icons/svg/arrow-down.svg?react';
 import ArrowUp from '../../../icons/svg/arrow-up.svg?react';
-import { toZonedTime, format } from "date-fns-tz";
+
 
 
 export const InspectionsManaging = () => {
 
   const { inspectionResume } = useGetEnterprisesHeader()
 
-  const timeZone = "America/Argentina/Buenos_Aires";
-  const zonedDate = toZonedTime(new Date(), timeZone);
-  const formattedDay = format(zonedDate, "dd/MM/yyyy");
-  const formattedHour = format(zonedDate, 'HH:mm')
 
   return (
     <section className="p-5">
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
-          <h1 className="text-xl font-extrabold">Performance inspecciones</h1>
-          <p className="text-gray-400 text-sm">
-            {formattedDay}, <strong className="text-black">{formattedHour}</strong>
-          </p>
+          <h1 className="text-xl font-extrabold">Inspecciones</h1>
+          
         </div>
         <div>
           <DialogAddInspection />

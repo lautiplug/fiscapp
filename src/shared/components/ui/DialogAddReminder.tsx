@@ -4,10 +4,19 @@ import { Dialog, DialogContent, DialogTrigger } from "../../../components/ui/dia
 import { type SubmitHandler } from "react-hook-form"
 import { useAddReminders, type Reminder } from "../../hooks/useAddReminders"
 import { useRemindersContext } from "../../context/RemindersContext"
+import { useEffect } from "react"
 
-export const DialogAddReminder = () => {
+interface DialogReminderProps {
+  editData?: Reminder;
+  trigger?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
 
-  const { addReminder } = useRemindersContext()
+export const DialogAddReminder = ({ editData, trigger, open, onOpenChange }: DialogReminderProps) => {
+  const { addReminder, updateReminder } = useRemindersContext()
+  const isEditing = !!editData
+
   const {
     register,
     handleSubmit,
@@ -15,18 +24,38 @@ export const DialogAddReminder = () => {
     reset,
   } = useAddReminders({ mode: "onChange" })
 
+  // Pre-populate form when editing
+  useEffect(() => {
+    if (editData) {
+      reset(editData)
+    }
+  }, [editData, reset])
+
   const onSubmit: SubmitHandler<Reminder> = (data) => {
-    addReminder(data);
+    if (isEditing && editData) {
+      updateReminder(editData.id, data);
+    } else {
+      addReminder(data);
+    }
     reset()
+    // Close dialog after successful submit
+    onOpenChange?.(false)
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="cursor-pointer  text-gray-700 border-gray-300 font-bold text-md"> Añadir + </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {trigger && (
+        <DialogTrigger asChild>
+          {trigger}
+        </DialogTrigger>
+      )}
+      {!trigger && (
+        <DialogTrigger asChild>
+          <Button variant="outline" className="cursor-pointer text-gray-700 border-gray-300 font-bold text-md"> Añadir + </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:w-[600px]">
-        <DialogTitle>Agregar Recordatorio</DialogTitle>
+        <DialogTitle>{isEditing ? 'Editar Recordatorio' : 'Agregar Recordatorio'}</DialogTitle>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <label className="text-md pb-2 pt-2 font-bold">Qué necesitas recordar?</label>
           <input className="border-1 p-2 rounded-md" {...register("title", { required: 'Este campo es obligatorio.' })} />
@@ -39,7 +68,9 @@ export const DialogAddReminder = () => {
             <option value="Alta">Alta</option>
           </select>
           <p className="text-red-500">{errors.priority?.message}</p>
-          <button className="p-2 bg-green-500 text-white mt-5 rounded-md cursor-pointer" type="submit">Agregar</button>
+          <button className="p-2 bg-green-500 text-white mt-5 rounded-md cursor-pointer" type="submit">
+            {isEditing ? 'Guardar cambios' : 'Agregar'}
+          </button>
         </form>
       </DialogContent>
     </Dialog>

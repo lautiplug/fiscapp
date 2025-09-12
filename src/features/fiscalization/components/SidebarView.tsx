@@ -1,4 +1,5 @@
 import type { FC, SVGProps } from 'react';
+import { NavLink } from 'react-router-dom';
 import Home from '../../../icons/svg/home.svg?react';
 import Mail from '../../../icons/svg/mail.svg?react';
 import Inspections from '../../../icons/svg/files.svg?react';
@@ -8,14 +9,14 @@ import Logout from '../../../icons/svg/logout.svg?react';
 type sidebar = {
   title?: string;
   iconSVG: FC<SVGProps<SVGSVGElement>>;
-  isActive?: boolean;
+  path?: string;
 }
 
 const icons: sidebar[] = [
-  { title: 'Inicio', iconSVG: Home, isActive: true },
-  { title: 'Mail', iconSVG: Mail },
-  { title: 'Inspecciones', iconSVG: Inspections },
-  { title: 'Links', iconSVG: Links },
+  { title: 'Inicio', iconSVG: Home, path: '/inicio' },
+  { title: 'Email', iconSVG: Mail, path: '/email' },
+  { title: 'Inspecciones', iconSVG: Inspections, path: '/inspecciones' },
+  { title: 'Links', iconSVG: Links, path: '/links' },
 ];
 
 const iconLogout: sidebar = { iconSVG: Logout }
@@ -29,13 +30,25 @@ export const SidebarView = () => {
       <div className='flex flex-col gap-3 justify-center self-center w-50'>
         <h1 className='font-bold text-2xl'>fscam</h1>
         {
-          icons.map(({ title, iconSVG: Icon, isActive }) => (
-            <div key={title} className='flex gap-4 max-w-md self-start items-center w-full hover:bg-green-100 group rounded-xl p-1 transition-all duration-300 cursor-pointer'>
-              <div className={isActive ? `shadow-sm rounded-md p-2 bg-green-300` : `shadow-sm rounded-md p-2`}>
-                <Icon width={"24px"} height={"24px"} />
-              </div>
-              <h1 className='font-medium'>{title}</h1>
-            </div>
+          icons.map(({ title, iconSVG: Icon, path }) => (
+            <NavLink 
+              key={title} 
+              to={path!}
+              className={({ isActive }) => 
+                `flex gap-4 max-w-md self-start items-center w-full hover:bg-green-100 group rounded-xl p-1 transition-all duration-300 cursor-pointer ${
+                  isActive ? 'bg-green-50' : ''
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <div className={isActive ? `shadow-sm rounded-md p-2 bg-green-300` : `shadow-sm rounded-md p-2`}>
+                    <Icon width={"24px"} height={"24px"} />
+                  </div>
+                  <h1 className={`font-medium ${isActive ? 'text-green-800' : ''}`}>{title}</h1>
+                </>
+              )}
+            </NavLink>
           ))
         }
       </div>

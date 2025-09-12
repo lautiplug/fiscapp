@@ -5,6 +5,8 @@ import { isInspectionOverdue } from "../utils/overdueEnterprises"
 interface EnterpriseContextType {
   enterprise: IFormInput[]
   addEnterprise: (data: IFormInput) => void
+  updateEnterprise: (id: number, data: IFormInput) => void
+  deleteEnterprise: (id: number) => void
   updateEnterpriseStatus: (id: number) => void
   formatStatus: (status: string) => string
 }
@@ -75,6 +77,41 @@ export const EnterpriseProvider = ({ children }: { children: React.ReactNode }) 
   };
 
 
+  const updateEnterprise = (originalId: number, data: IFormInput) => {
+    console.log("🔍 updateEnterprise called with originalId:", originalId, "data:", data);
+    console.log("🔍 Current enterprise array:", enterprise);
+    
+    const updated = enterprise.map(item => {
+      if (item.id === originalId) {
+        console.log("🔍 Found matching item:", item);
+        // Use all new data, including the potentially new ID
+        const newItem = { ...data };
+        console.log("🔍 Creating new item:", newItem);
+        return newItem;
+      }
+      return item;
+    });
+    
+    console.log("🔍 Updated array:", updated);
+    
+    const sorted = updated.sort((a, b) => {
+      const aOverdue = isInspectionOverdue(a);
+      const bOverdue = isInspectionOverdue(b);
+      
+      if (aOverdue && !bOverdue) return -1;
+      if (!aOverdue && bOverdue) return 1;
+      return 0;
+    });
+    
+    console.log("🔍 Final sorted array:", sorted);
+    setEnterprise(sorted)
+  }
+
+  const deleteEnterprise = (id: number) => {
+    const updated = enterprise.filter(item => item.id !== id)
+    setEnterprise(updated)
+  }
+
   const formatStatus = (status: string) => {
     switch (status) {
       case "waiting":
@@ -89,7 +126,14 @@ export const EnterpriseProvider = ({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <EnterpriseContext.Provider value={{ enterprise, addEnterprise, updateEnterpriseStatus, formatStatus }}>
+    <EnterpriseContext.Provider value={{ 
+      enterprise, 
+      addEnterprise, 
+      updateEnterprise, 
+      deleteEnterprise, 
+      updateEnterpriseStatus, 
+      formatStatus 
+    }}>
       {children}
     </EnterpriseContext.Provider>
   )

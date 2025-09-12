@@ -1,5 +1,5 @@
 import { Popover, PopoverArrow, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-
+import { useState } from "react";
 import { useRemindersContext } from "../../../shared/context/RemindersContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../../../components/ui/button";
@@ -8,6 +8,14 @@ import { DialogAddReminder } from "../../../shared/components/ui/DialogAddRemind
 export const Reminders = () => {
   const { reminder, onDeleteReminder, onCompleteReminder, onUndoReminder } =
     useRemindersContext();
+
+  const [editingReminder, setEditingReminder] = useState(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const handleEditReminder = (reminderData: any) => {
+    setEditingReminder(reminderData);
+    setIsEditDialogOpen(true);
+  };
 
   const bgByPriority = (p: string) =>
     p === "Alta" ? "bg-red-100" : p === "Media" ? "bg-yellow-100" : "bg-blue-100";
@@ -44,21 +52,22 @@ export const Reminders = () => {
               className={`flex justify-between items-center p-2 rounded-md mb-3 ${bgByPriority(
                 r.priority
               )} ${completed ? "opacity-70" : ""}`}
+              title={r.title}
             >
               <label
                 htmlFor={`rem-${r.id}`}
-                className="flex items-center gap-2 cursor-pointer flex-1"
+                className="flex items-center gap-3 cursor-pointer flex-1"
               >
                 <input
                   id={`rem-${r.id}`}
                   type="checkbox"
-                  className="w-5 h-5 mr-2 cursor-pointer accent-white"
+                  className="w-auto h-auto mr-2 cursor-pointer accent-white"
                   checked={completed}
                   onChange={(e) => onCompleteReminder(r.id, e.target.checked)}
                 />
                 <div>
                   <h1
-                    className={`${completed ? "line-through font-black text-sm" : "font-black text-sm"
+                    className={`${completed ? "line-through font-black text-sm max-w-[150px] truncate whitespace-nowrap overflow-hidden text-ellipsis" : "max-w-[200px] truncate whitespace-nowrap overflow-hidden text-ellipsis font-black text-sm" }
                       }`}
                   >
                     {r.title}
@@ -100,7 +109,7 @@ export const Reminders = () => {
                       <button
                         type="button"
                         className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors cursor-pointer"
-                      // onClick={/* tu handler de Editar */}
+                        onClick={() => handleEditReminder(r)}
                       >
                         Editar
                       </button>
@@ -121,6 +130,19 @@ export const Reminders = () => {
           );
         })}
       </AnimatePresence>
+
+      {/* Edit dialog */}
+      <DialogAddReminder 
+        editData={editingReminder || undefined}
+        open={isEditDialogOpen}
+        onOpenChange={(open) => {
+          setIsEditDialogOpen(open)
+          if (!open) {
+            setEditingReminder(null)
+          }
+        }}
+        trigger={<div style={{ display: 'none' }} />}
+      />
     </div>
   );
 };
