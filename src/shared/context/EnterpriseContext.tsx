@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { enterpriseStatus, type IFormInput } from "../hooks/useFormEnterprises"
 import { isInspectionOverdue } from "../utils/overdueEnterprises"
+import { enterpriseNotifications } from "../lib/notifications"
 
 interface EnterpriseContextType {
   enterprise: IFormInput[]
   addEnterprise: (data: IFormInput) => void
-  updateEnterprise: (id: number, data: IFormInput) => void
-  deleteEnterprise: (id: number) => void
-  updateEnterpriseStatus: (id: number) => void
+  updateEnterprise: (id: string, data: IFormInput) => void
+  deleteEnterprise: (id: string) => void
+  updateEnterpriseStatus: (id: string) => void
   formatStatus: (status: string) => string
 }
 
@@ -40,9 +41,10 @@ export const EnterpriseProvider = ({ children }: { children: React.ReactNode }) 
     })
 
     setEnterprise(sorted)
+    enterpriseNotifications.added(data.name)
   }
 
-  const updateEnterpriseStatus = (id: number) => {
+  const updateEnterpriseStatus = (id: string) => {
     const updated = enterprise.map((item) => {
       if (item.id !== id) return item;
   
@@ -77,7 +79,7 @@ export const EnterpriseProvider = ({ children }: { children: React.ReactNode }) 
   };
 
 
-  const updateEnterprise = (originalId: number, data: IFormInput) => {
+  const updateEnterprise = (originalId: string, data: IFormInput) => {
     console.log("🔍 updateEnterprise called with originalId:", originalId, "data:", data);
     console.log("🔍 Current enterprise array:", enterprise);
     
@@ -105,11 +107,16 @@ export const EnterpriseProvider = ({ children }: { children: React.ReactNode }) 
     
     console.log("🔍 Final sorted array:", sorted);
     setEnterprise(sorted)
+    enterpriseNotifications.updated(data.name)
   }
 
-  const deleteEnterprise = (id: number) => {
+  const deleteEnterprise = (id: string) => {
+    const enterpriseToDelete = enterprise.find(item => item.id === id)
     const updated = enterprise.filter(item => item.id !== id)
     setEnterprise(updated)
+    if (enterpriseToDelete) {
+      enterpriseNotifications.deleted(enterpriseToDelete.name)
+    }
   }
 
   const formatStatus = (status: string) => {

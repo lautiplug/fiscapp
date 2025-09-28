@@ -8,24 +8,27 @@ interface PageLayoutProps {
 
 export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
-    <main className="w-full h-screen grid grid-cols-5 grid-rows-[80px_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 pr-10 pb-5 bg-white"
-      style={{
-        backgroundImage: `
-        radial-gradient(circle at center, #d1f9de, transparent)
-      `,
-        backgroundRepeat: "no-repeat"
-      }}>
-      <section className="row-span-7 w-65">
+    <div className="w-full h-screen flex bg-gradient-to-br from-slate-50 via-slate-50 to-blue-50/30">
+
+      {/* Sidebar */}
+      <aside className="w-56 flex-shrink-0">
         <SidebarView />
-      </section>
+      </aside>
 
-      <div className="w-full col-span-4">
-        <Navbar />
-      </div>
+      {/* Main Content Area */}
+      <main className="flex-1 grid grid-rows-[auto_1fr] gap-2 pr-2 pb-2 pt-1 pl-1">
+        {/* Navbar */}
+        <div className="w-full">
+          <Navbar />
+        </div>
 
-      <div className="col-span-4 col-start-2 row-start-3 row-span-5">
-        {children}
-      </div>
-    </main>
+        {/* Page Content */}
+        <div className="bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-200/50 rounded-2xl border border-white/50 overflow-hidden min-h-0 flex-1">
+          <div className="p-2 h-full overflow-auto">
+            {children}
+          </div>
+        </div>
+      </main>
+    </div>
   )
 }

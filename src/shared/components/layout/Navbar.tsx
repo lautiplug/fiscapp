@@ -42,17 +42,21 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between pt-5 pb-5 items-center w-full">
-      <div>
-        <h1 className="font-bold text-2xl text-green-800">{getGreeting(zonedDate)}, Emir. </h1>
-        <p>Son las {formattedHour} del {formattedDay}</p>
-      </div>
-      <div className="flex items-center justify-end w-2/5 gap-2">
-        <div className="p-1.5 rounded-xl shadow-sm  border bg-white transition-colors">
-          <IconNotif width={'35px'} height={'35px'} />
+    <nav className="flex justify-between items-center w-full px-1 bg-white mt-2 rounded-xl">
+      <div className="flex flex-col gap-1 p-3 ">
+        <h1 className="font-semibold text-xl text-slate-800 tracking-tight">{getGreeting(zonedDate)}, <span className="font-brand text-blue-600">Emir</span></h1>
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+          <span>Son las {formattedHour} del {formattedDay}</span>
         </div>
-        <Link to="/perfil" className="hover:opacity-80 transition-opacity">
-          <IconProfilePic width={'55px'} height={'55px'} />
+      </div>
+      <div className="flex items-center gap-3 mr-3">
+        <button className="relative p-2 rounded-xl bg-white shadow-sm border border-slate-200/60 hover:shadow-md hover:bg-slate-50/50 transition-all duration-300 group">
+          <IconNotif width={'25px'} height={'25px'} className="stroke-slate-600 group-hover:stroke-slate-700" />
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></div>
+        </button>
+        <Link to="/perfil" className="relative p-2 rounded-xl shadow-lg hover:shadow-blue-600/30 transition-all duration-300 group">
+          <IconProfilePic width={'25px'} height={'25px'} className="stroke-white" />
         </Link>
       </div>
     </nav>

@@ -9,12 +9,15 @@ export enum enterpriseStatus {
 }
 
 export interface IFormInput {
-  id: number
+  id: string // Changed from number to string to preserve leading zeros
   cuit: number
   city: string
   name: string
   status: enterpriseStatus
   date: string
+  phone?: string
+  activity?: string
+  observations?: string // For conditional warnings and notes
 }
 
 export const useFormEnterprises = (options?: UseFormProps<IFormInput>) => {

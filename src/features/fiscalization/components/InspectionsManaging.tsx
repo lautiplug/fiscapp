@@ -1,57 +1,56 @@
-
-import { DialogAddInspection } from "../../../shared/components/ui/DialogAddInspection";
 import { useGetEnterprisesHeader } from "../hooks/useGetEnterprisesHeader";
 import ArrowDown from '../../../icons/svg/arrow-down.svg?react';
 import ArrowUp from '../../../icons/svg/arrow-up.svg?react';
-
-
 
 export const InspectionsManaging = () => {
 
   const { inspectionResume } = useGetEnterprisesHeader()
 
-
   return (
-    <section className="p-5">
-      <div className="flex justify-between items-center">
+    <section className="p-2">
+      <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col">
-          <h1 className="text-xl font-extrabold">Inspecciones</h1>
-          
+          <h1 className="text-2xl font-bold text-slate-800 tracking-tight ml-2">Inspecciones</h1>
         </div>
-        <div>
-          <DialogAddInspection />
-        </div>
+
       </div>
 
-      <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {
           inspectionResume.map((insp, index) => (
             <div
               key={index}
-              className={'border-1 flex flex-col p-3 pl-3 gap-5</section>'}
+              className="bg-gradient-to-br from-white to-slate-50/50 rounded-md border border-slate-200/50 p-4 shadow-sm hover:shadow-md transition-all duration-300 group"
             >
-              <div className="flex items-center justify-between gap-4">
-                <h1 className="lg:text-sm font-semibold">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-medium text-slate-600 uppercase tracking-wide">
                   {insp.title}
-                </h1>
-                <div>
+                </h3>
+                <div className="flex items-center gap-1.5">
                   {insp.averagePercentage > 0
-                    ? <p className="flex items-center gap-2 bg-green-100 p-1 rounded-md pr-2 pl-2">
-                      <ArrowUp width={'30px'} height={'25px'}/>{insp.averagePercentage} %
-                    </p>
-                    : insp.averagePercentage === 0 ? <p className="flex items-center gap-2 bg-orange-100 p-1 rounded-md pl-2 pr-2">
-                     {insp.averagePercentage} %
-                  </p>
-                  : <p className="flex items-center gap-2 bg-red-100 p-1 rounded-md pl-2 pr-2">
-                  <ArrowDown width={'30px'} height={'25px'}/>{insp.averagePercentage} %
-                </p>
+                    ? <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-200/50">
+                        <ArrowUp width={'14px'} height={'14px'} className="stroke-emerald-600"/>
+                        <span className="text-xs font-semibold">{insp.averagePercentage}%</span>
+                      </div>
+                    : insp.averagePercentage === 0
+                      ? <div className="flex items-center gap-1.5 bg-orange-50 text-orange-700 px-2.5 py-1 rounded-lg border border-orange-200/50">
+                          <span className="text-xs font-semibold">{insp.averagePercentage}%</span>
+                        </div>
+                      : <div className="flex items-center gap-1.5 bg-red-50 text-red-700 px-2.5 py-1 rounded-lg border border-red-200/50">
+                          <ArrowDown width={'14px'} height={'14px'} className="stroke-red-600"/>
+                          <span className="text-xs font-semibold">{insp.averagePercentage}%</span>
+                        </div>
                   }
                 </div>
               </div>
-              <h2 className="text-5xl font-bold">
-                {insp.inspectionsCount < 100 ? `0${insp.inspectionsCount}` : insp.inspectionsCount}
-              </h2>
-              <p>Empresas</p>
+
+              <div className="flex items-baseline gap-2 mb-2">
+                <h2 className="text-3xl font-bold text-slate-800">
+                  {insp.inspectionsCount.toString().padStart(2, '0')}
+                </h2>
+              </div>
+
+              <p className="text-sm text-slate-500 font-medium">Empresas registradas</p>
             </div>
           ))
         }

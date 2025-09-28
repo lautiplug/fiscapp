@@ -18,7 +18,7 @@ export const Reminders = () => {
   };
 
   const bgByPriority = (p: string) =>
-    p === "Alta" ? "bg-red-100" : p === "Media" ? "bg-yellow-100" : "bg-blue-100";
+    p === "Alta" ? "bg-red-200" : p === "Media" ? "bg-yellow-100" : "bg-gray-100";
 
   const priorityOrder: Record<string, number> = {
     Alta: 3,

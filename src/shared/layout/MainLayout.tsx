@@ -12,36 +12,44 @@ interface MainLayoutProps {
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <main className="w-full h-screen grid grid-cols-5 grid-rows-[80px_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 pr-10 pb-5 bg-white"
-      style={{
-        backgroundImage: `
-        radial-gradient(circle at center, #d1f9de, transparent)
-      `,
-        backgroundRepeat: "no-repeat"
-      }}>
-      <section className="row-span-7 w-65 ">
+    <div className="w-full h-screen flex bg-gradient-to-br from-slate-50 via-slate-50 to-blue-50/30">
+
+      {/* Sidebar */}
+      <aside className="w-56 flex-shrink-0">
         <SidebarView />
-      </section>
+      </aside>
 
-      <div className="w-full col-span-4">
-        <Navbar />
-      </div>
+      {/* Main Content Area */}
+      <main className="flex-1 grid grid-rows-[auto_auto_2fr] gap-2 pr-2 pb-2 pt-1 pl-1">
+        {/* Navbar */}
+        <div className="w-full">
+          <Navbar />
+        </div>
 
-      <div className="col-span-4 col-start-2 bg-white shadow-sm rounded-md">
-        <InspectionsManaging />
-      </div>
+        {/* Inspections Managing */}
+        <div className="bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-200/50 rounded-2xl border border-white/50">
+          <InspectionsManaging />
+        </div>
 
-      <div className="col-span-3 row-span-5 col-start-2 bg-white shadow-md rounded-md overflow-y-scroll p-2 min-h-0">
-        <TableInfo />
-      </div>
+        {/* Bottom section with Table and Reminders */}
+        <div className="grid grid-cols-4 gap-2 min-h-0">
+          <div className="col-span-3 bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-200/50 rounded-2xl border border-white/50 overflow-hidden">
+            <div className="p-2 h-full flex flex-col">
+              <TableInfo />
+            </div>
+          </div>
 
-      <div className="col-span-2 row-span-5 col-start-5 mr-2 bg-white shadow-md rounded-md p-2">
-        <ReminderProvider>
-          <Reminders />
-        </ReminderProvider>
-      </div>
+          <div className="bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-200/50 rounded-2xl border border-white/50">
+            <div className="p-2">
+              <ReminderProvider>
+                <Reminders />
+              </ReminderProvider>
+            </div>
+          </div>
+        </div>
+      </main>
 
       {children}
-    </main>
+    </div>
   )
 } 

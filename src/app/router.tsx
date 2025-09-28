@@ -1,14 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { MainLayout } from "../shared/layout/MainLayout"
 import { EmailPage } from "../features/fiscalization/pages/EmailPage"
-import { InspeccionesPage } from "../features/fiscalization/pages/InspeccionesPage"
+import { DetailedInspectionsPage } from "../features/fiscalization/pages/DetailedInspectionsPage"
 import { LinksPage } from "../features/fiscalization/pages/LinksPage"
 import { PerfilPage } from "../features/fiscalization/pages/PerfilPage"
+import { Login } from "../features/fiscalization/pages/Login"
+import { TablesPage } from "../features/fiscalization/pages/TablesPage"
+
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/inicio",
@@ -20,11 +27,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/inspecciones",
-    element: <InspeccionesPage />,
+    element: <DetailedInspectionsPage />,
   },
   {
     path: "/links",
     element: <LinksPage />,
+  },
+  {
+    path: "/tablas",
+    element: <TablesPage />,
   },
   {
     path: "/perfil",

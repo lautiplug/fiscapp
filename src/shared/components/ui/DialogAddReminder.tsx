@@ -51,7 +51,7 @@ export const DialogAddReminder = ({ editData, trigger, open, onOpenChange }: Dia
       )}
       {!trigger && (
         <DialogTrigger asChild>
-          <Button variant="outline" className="cursor-pointer text-gray-700 border-gray-300 font-bold text-md"> Añadir + </Button>
+          <Button variant="outline" className="cursor-pointer text-gray-700 border-gray-300 font-bold text-md hover:bg-blue-700"> Añadir + </Button>
         </DialogTrigger>
       )}
       <DialogContent className="sm:w-[600px]">
@@ -68,7 +68,7 @@ export const DialogAddReminder = ({ editData, trigger, open, onOpenChange }: Dia
             <option value="Alta">Alta</option>
           </select>
           <p className="text-red-500">{errors.priority?.message}</p>
-          <button className="p-2 bg-green-500 text-white mt-5 rounded-md cursor-pointer" type="submit">
+          <button className="p-2 bg-blue-700 text-white mt-5 rounded-md cursor-pointer" type="submit">
             {isEditing ? 'Guardar cambios' : 'Agregar'}
           </button>
         </form>
