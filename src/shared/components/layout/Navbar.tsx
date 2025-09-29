@@ -4,6 +4,11 @@ import Notifications from '../../../icons/svg/notifications.svg?react';
 import ProfilePic from '../../../icons/svg/profile.svg?react';
 import { useState, useEffect } from "react";
 import { toZonedTime, format } from "date-fns-tz";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../../components/ui/popover"
 
 type icons = {
   iconSVG: FC<SVGProps<SVGSVGElement>>;
@@ -50,11 +55,25 @@ export const Navbar = () => {
           <span>Son las {formattedHour} del {formattedDay}</span>
         </div>
       </div>
-      <div className="flex items-center gap-3 mr-3">
-        <button className="relative p-2 rounded-xl bg-white shadow-sm border border-slate-200/60 hover:shadow-md hover:bg-slate-50/50 transition-all duration-300 group">
-          <IconNotif width={'25px'} height={'25px'} className="stroke-slate-600 group-hover:stroke-slate-700" />
-          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></div>
-        </button>
+      <div className="flex items-center gap-3">
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="relative p-2 rounded-xl bg-white shadow-sm border border-slate-200/60 hover:shadow-md hover:bg-slate-50/50 transition-all duration-300 group cursor-pointer">
+              <IconNotif width={'25px'} height={'25px'} className="stroke-slate-600 group-hover:stroke-slate-700" />
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></div>
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 mr-15">
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <h4 className="leading-none font-medium">Notificaciones</h4>
+                <p className="text-muted-foreground text-sm">
+                  Tenés notificaciones nuevas.
+                </p>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
         <Link to="/perfil" className="relative p-2 rounded-xl shadow-lg hover:shadow-blue-600/30 transition-all duration-300 group">
           <IconProfilePic width={'25px'} height={'25px'} className="stroke-white" />
         </Link>

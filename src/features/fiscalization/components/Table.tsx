@@ -1,7 +1,7 @@
 import { useEnterprise } from "../../../shared/context/EnterpriseContext"
 import { getColumns } from "../hooks/columns"
 import { useState, type FC, type SVGProps } from "react"
-import { isInspectionOverdue } from "../../../shared/utils/overdueEnterprises"
+import { isInspectionOverdue, sortWithOverdueFirst, getOverdueCount } from "../../../shared/utils/overdueEnterprises"
 import AlertIcon from '../../../icons/svg/alert.svg?react';
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
 import { AnimatePresence } from "framer-motion";
@@ -41,8 +41,11 @@ export const TableInfo = () => {
     navigate('/inspecciones')
   }
 
+  // Sort enterprises to show overdue ones first
+  const sortedEnterprises = sortWithOverdueFirst(enterprise);
+
   const table = useReactTable({
-    data: enterprise,
+    data: sortedEnterprises,
     columns: getColumns(updateEnterpriseStatus, formatStatus, handleEditEnterprise, handleDeleteEnterprise, handleStatusClick),
     state: {
       globalFilter,
@@ -60,7 +63,7 @@ export const TableInfo = () => {
   })
 
   const currentRows = table.getRowModel().rows;
-  const currentOverdueCount = currentRows.filter(row => isInspectionOverdue(row.original)).length;
+  const currentOverdueCount = getOverdueCount(currentRows.map(row => row.original));
 
   return (
     <AnimatePresence mode="popLayout">

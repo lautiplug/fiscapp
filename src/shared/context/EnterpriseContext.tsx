@@ -31,8 +31,8 @@ export const EnterpriseProvider = ({ children }: { children: React.ReactNode }) 
     const updated = [data, ...enterprise]
 
     const sorted = updated.sort((a, b) => {
-      const aOverdueSorted = isInspectionOverdue(a)
       const bOverdueSorted = isInspectionOverdue(b)
+      const aOverdueSorted = isInspectionOverdue(a)
 
       if(aOverdueSorted && !bOverdueSorted) return - 1
       if(!aOverdueSorted && bOverdueSorted) return 1
