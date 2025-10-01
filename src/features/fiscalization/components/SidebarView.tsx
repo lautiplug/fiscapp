@@ -35,12 +35,12 @@ export const SidebarView = () => {
           {/* Logo Section */}
           <div className='mb-4'>
             <div className='flex items-center gap-2.5 mb-2'>
-              <div className='w-10 h-11 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20'>
+              <div className='w-10 h-11 bg-gradient-to-br from-emerald-600 to-teal-700 rounded-lg flex items-center justify-center shadow-md shadow-emerald-500/20'>
                 <img width={'30px'} src={TruckLogo} alt="camioneros logo" />
               </div>
               <h1 className='font-brand font-bold text-xl text-slate-800 tracking-tight'>FiscUp</h1>
             </div>
-            <div className='w-12 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full'></div>
+            <div className='w-12 h-0.5 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full'></div>
           </div>
 
           {/* Navigation */}
@@ -49,12 +49,13 @@ export const SidebarView = () => {
               <NavLink
                 key={title}
                 to={path!}
-                className="flex gap-3 items-center group rounded-lg transition-all duration-300 cursor-pointer px-2 py-2 hover:bg-slate-50"
+                className="flex gap-3 items-center group rounded-lg transition-all duration-300 cursor-pointer
+                 py-2 hover:bg-slate-50"
               >
                 {({ isActive }) => (
                   <>
                     <div className={isActive
-                      ? 'bg-gradient-to-br from-blue-600 to-indigo-700 rounded-md p-2 shadow-md shadow-blue-500/20 transition-all duration-300'
+                      ? 'bg-gradient-to-br from-emerald-600 to-teal-700 rounded-md p-2 shadow-md shadow-emerald-500/20 transition-all duration-300'
                       : 'bg-slate-50 rounded-md p-2 shadow-sm border border-slate-200/50 group-hover:shadow-md group-hover:bg-white transition-all duration-300'
                     }>
                       <Icon
@@ -80,7 +81,7 @@ export const SidebarView = () => {
         </div>
 
         {/* Logout Section */}
-        <Link to='/login?' className='flex items-center gap-3 w-full hover:bg-red-50/70 rounded-lg px-2 py-2 transition-all duration-300 cursor-pointer border-t border-slate-200/60 mt-4 pt-4 group'>
+        <Link to='/login?' className='flex items-center gap-3 w-full hover:bg-red-50/70 rounded-lg py-2 transition-all duration-300 cursor-pointer border-t border-slate-200/60 mt-4 pt-4 group'>
           <div className='bg-slate-50 shadow-sm rounded-md p-2 border border-slate-200/50 group-hover:bg-red-50/80 group-hover:border-red-200/50 transition-all duration-300'>
             <LogoutIcon width={'16px'} height={'16px'} className="stroke-red-500" />
           </div>

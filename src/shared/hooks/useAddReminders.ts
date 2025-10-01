@@ -11,7 +11,7 @@ export interface Reminder {
   id: number;
   title: string;
   priority: reminderPriority;
-  date?: string;
+  date: string;
   completed?: boolean;  
 }
 
@@ -21,28 +21,27 @@ export const useAddReminders = (options?: UseFormProps<Reminder>) => {
     return stored ? JSON.parse(stored) : [];
   });
 
-  // guardo timeouts por id para poder cancelarlos en Undo
   const timersRef = useRef<Record<number, number>>({});
 
-  const persist = (list: Reminder[]) => {
-    setReminder(list);
-    localStorage.setItem("reminders", JSON.stringify(list));
+  const persist = (updater: Reminder[] | ((prev: Reminder[]) => Reminder[])) => {
+    setReminder(prev => {
+      const next = typeof updater === "function" ? (updater as (prev: Reminder[]) => Reminder[])(prev) : updater;
+      localStorage.setItem("reminders", JSON.stringify(next));
+      return next;
+    });
   };
 
   const addReminder = (data: Reminder) => {
     const newReminder: Reminder = {
       ...data,
       id: Date.now(),
-      completed: false, 
+      completed: false,
     };
-    const updated = [...reminder, newReminder];
-    persist(updated);
+    persist(prev => [...prev, newReminder]);
   };
 
   const updateReminder = (id: number, patch: Partial<Reminder>) => {
-    persist(
-      reminder.map(r => (r.id === id ? { ...r, ...patch } : r))
-    );
+    persist(prev => prev.map(r => (r.id === id ? { ...r, ...patch } : r)));
   };
 
   const onDeleteReminder = (id: number) => {
@@ -50,29 +49,16 @@ export const useAddReminders = (options?: UseFormProps<Reminder>) => {
       clearTimeout(timersRef.current[id]);
       delete timersRef.current[id];
     }
-    const updated = reminder.filter((item) => item.id !== id);
-    persist(updated);
+    persist(prev => prev.filter(r => r.id !== id));
   };
 
-  // ✅ marcar como completado y borrar en 5s (con Undo)
   const onCompleteReminder = (id: number, checked: boolean) => {
-    // 1) seteo el completed
-    const updated = reminder.map((r) =>
-      r.id === id ? { ...r, completed: checked } : r
-    );
-    persist(updated);
+    persist(prev => prev.map(r => (r.id === id ? { ...r, completed: checked } : r)));
 
     if (checked) {
-      // prevengo duplicados
       if (timersRef.current[id]) clearTimeout(timersRef.current[id]);
-
       timersRef.current[id] = window.setTimeout(() => {
-        setReminder((prev) => {
-          const next = prev.filter((r) => r.id !== id);
-          localStorage.setItem("reminders", JSON.stringify(next));
-          
-          return next;
-        });
+        persist(prev => prev.filter(r => r.id !== id));
         delete timersRef.current[id];
       }, 5000);
     } else {

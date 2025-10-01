@@ -1,13 +1,36 @@
 import { Popover, PopoverArrow, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRemindersContext } from "../../../shared/context/RemindersContext";
+import { useNotifications } from "../../../shared/context/NotificationContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../../../components/ui/button";
 import { DialogAddReminder } from "../../../shared/components/ui/DialogAddReminder";
+import { toZonedTime, format } from "date-fns-tz";
+
+const REMINDER_NOTIFICATION_ID = "reminder-due-today";
 
 export const Reminders = () => {
   const { reminder, onDeleteReminder, onCompleteReminder, onUndoReminder } =
     useRemindersContext();
+  const { addOrUpdateNotification, dismissedCounts } = useNotifications();
+
+  // Check for reminders due today and update notification
+  useEffect(() => {
+    const today = format(toZonedTime(new Date(), "America/Argentina/Buenos_Aires"), "yyyy-MM-dd");
+    const dueToday = reminder.filter(r => !r.completed && r.date === today);
+    const lastDismissedCount = dismissedCounts.get(REMINDER_NOTIFICATION_ID) || 0;
+
+    // Only show notification if count increased or user hasn't dismissed it yet
+    if (dueToday.length > 0 && dueToday.length > lastDismissedCount) {
+      addOrUpdateNotification({
+        id: REMINDER_NOTIFICATION_ID,
+        message: `Tenés ${dueToday.length} recordatorio${dueToday.length > 1 ? 's' : ''} para hoy`,
+        type: "info",
+        dismissible: true,
+        count: dueToday.length,
+      });
+    }
+  }, [reminder, addOrUpdateNotification, dismissedCounts]);
 
   const [editingReminder, setEditingReminder] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -31,14 +54,15 @@ export const Reminders = () => {
   );
 
   return (
-    <div className="flex flex-col items-right w-full p-2">
-      <div className="flex justify-between items-center mb-4">
-        <p>Recordatorios</p>
+    <div className="flex flex-col h-full">
+      <div className="flex justify-between items-center mb-4 flex-shrink-0">
+        <p className="font-semibold text-slate-800">Recordatorios</p>
         <DialogAddReminder />
       </div>
 
-      <AnimatePresence mode="popLayout">
-        {sorted.map((r) => {
+      <div className="flex-1 overflow-y-auto pr-1 min-h-0">
+        <AnimatePresence mode="popLayout">
+          {sorted.map((r) => {
           const completed = !!r.completed;
 
           return (
@@ -129,7 +153,8 @@ export const Reminders = () => {
             </motion.div>
           );
         })}
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
 
       {/* Edit dialog */}
       <DialogAddReminder 

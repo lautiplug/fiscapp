@@ -72,7 +72,7 @@ export const PerfilPage = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => setIsEditing(!isEditing)}
-                    className="border-blue-200 text-blue-600 hover:bg-blue-700 cursor-pointer"
+                    className="border-emerald-200 text-emerald-600 hover:bg-emerald-700 cursor-pointer"
                   >
                     {isEditing ? "Cancelar" : "Editar"}
                   </Button>
@@ -86,7 +86,7 @@ export const PerfilPage = () => {
                       <Input
                         value={userProfile.name}
                         onChange={(e) => setUserProfile({...userProfile, name: e.target.value})}
-                        className="border-slate-200 focus:border-blue-500"
+                        className="border-slate-200 focus:border-emerald-500"
                       />
                     ) : (
                       <p className="text-slate-900 py-1 text-sm ml-1">{userProfile.name}</p>
@@ -99,7 +99,7 @@ export const PerfilPage = () => {
                         type="email"
                         value={userProfile.email}
                         onChange={(e) => setUserProfile({...userProfile, email: e.target.value})}
-                        className="border-slate-200 focus:border-blue-500"
+                        className="border-slate-200 focus:border-emerald-500"
                       />
                     ) : (
                       <p className="text-slate-900 py-1 text-sm ml-1">{userProfile.email}</p>
@@ -111,7 +111,7 @@ export const PerfilPage = () => {
                       <Input
                         value={userProfile.role}
                         onChange={(e) => setUserProfile({...userProfile, role: e.target.value})}
-                        className="border-slate-200 focus:border-blue-500"
+                        className="border-slate-200 focus:border-emerald-500"
                       />
                     ) : (
                       <p className="text-slate-900 py-1 text-sm ml-1">{userProfile.role}</p>
@@ -123,7 +123,7 @@ export const PerfilPage = () => {
                       <Input
                         value={userProfile.department}
                         onChange={(e) => setUserProfile({...userProfile, department: e.target.value})}
-                        className="border-slate-200 focus:border-blue-500"
+                        className="border-slate-200 focus:border-emerald-500"
                       />
                     ) : (
                       <p className="text-slate-900 py-1 text-sm ml-1">{userProfile.department}</p>
@@ -135,7 +135,7 @@ export const PerfilPage = () => {
                       <Input
                         value={userProfile.phone}
                         onChange={(e) => setUserProfile({...userProfile, phone: e.target.value})}
-                        className="border-slate-200 focus:border-blue-500"
+                        className="border-slate-200 focus:border-emerald-500"
                       />
                     ) : (
                       <p className="text-slate-900 py-1 text-sm ml-1">{userProfile.phone}</p>
@@ -156,7 +156,7 @@ export const PerfilPage = () => {
                   <div className="pt-4 border-t border-slate-200/50">
                     <Button
                       onClick={handleSaveProfile}
-                      className="bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-6"
+                      className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer text-white px-6"
                     >
                       Guardar Cambios
                     </Button>
@@ -177,17 +177,17 @@ export const PerfilPage = () => {
               <div className="p-8 space-y-6">
                 <div className="space-y-2">
                   <Label className="text-slate-700 font-medium">Contraseña actual</Label>
-                  <Input type="password" placeholder="••••••••" className="border-slate-200 focus:border-blue-500" />
+                  <Input type="password" placeholder="••••••••" className="border-slate-200 focus:border-emerald-500" />
                 </div>
                 <div className="space-y-2">
                   <Label className="text-slate-700 font-medium">Nueva contraseña</Label>
-                  <Input type="password" placeholder="••••••••" className="border-slate-200 focus:border-blue-500" />
+                  <Input type="password" placeholder="••••••••" className="border-slate-200 focus:border-emerald-500" />
                 </div>
                 <div className="space-y-2">
                   <Label className="text-slate-700 font-medium">Confirmar nueva contraseña</Label>
-                  <Input type="password" placeholder="••••••••" className="border-slate-200 focus:border-blue-500" />
+                  <Input type="password" placeholder="••••••••" className="border-slate-200 focus:border-emerald-500" />
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6">
                   Actualizar Contraseña
                 </Button>
               </div>
@@ -211,7 +211,7 @@ export const PerfilPage = () => {
                   <button
                     onClick={() => handleSettingChange('emailNotifications', !settings.emailNotifications)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      settings.emailNotifications ? 'bg-blue-600' : 'bg-slate-200'
+                      settings.emailNotifications ? 'bg-emerald-600' : 'bg-slate-200'
                     }`}
                   >
                     <span
@@ -229,7 +229,7 @@ export const PerfilPage = () => {
                   <button
                     onClick={() => handleSettingChange('desktopNotifications', !settings.desktopNotifications)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      settings.desktopNotifications ? 'bg-blue-600' : 'bg-slate-200'
+                      settings.desktopNotifications ? 'bg-emerald-600' : 'bg-slate-200'
                     }`}
                   >
                     <span
@@ -244,7 +244,7 @@ export const PerfilPage = () => {
                   <select
                     value={settings.language}
                     onChange={(e) => handleSettingChange('language', e.target.value)}
-                    className="mt-1 block w-full border border-slate-200 rounded-lg px-3 py-2 focus:border-blue-500 focus:outline-none"
+                    className="mt-1 block w-full border border-slate-200 rounded-lg px-3 py-2 focus:border-emerald-500 focus:outline-none"
                   >
                     <option value="es">Español</option>
                     <option value="en">English</option>
@@ -349,7 +349,7 @@ export const PerfilPage = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`cursor-pointer flex items-center py-2 text-sm font-medium transition-colors mr-4 ${
                     activeTab === tab.id
-                      ? 'bg-blue-100 text-blue-600 rounded-md px-3'
+                      ? 'bg-blue-100 text-emerald-600 rounded-md px-3'
                       : 'border-transparent text-slate-600 hover:text-slate-800 hover:border-slate-300'
                   }`}
                 >

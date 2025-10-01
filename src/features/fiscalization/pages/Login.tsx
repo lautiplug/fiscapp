@@ -86,7 +86,7 @@ export function Login({
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-teal-700 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/25">
               <img width="32px" src={TruckLogo} alt="FiscUp logo" />
             </div>
             <h1 className="text-3xl font-bold text-slate-800 tracking-tight">FiscUp</h1>
@@ -110,7 +110,7 @@ export function Login({
             {/* Google OAuth Button */}
             <Button
               variant="outline"
-              className="cursor-pointer w-full py-3 border-slate-200 hover:bg-blue-700 transition-all duration-200"
+              className="cursor-pointer w-full py-3 border-slate-200 hover:bg-emerald-700 transition-all duration-200"
               onClick={handleGoogleAuth}
               disabled={isLoading}
             >
@@ -143,7 +143,7 @@ export function Login({
                     placeholder="email@camioneros.com"
                     value={loginForm.email}
                     onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
-                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                    className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
                     required
                   />
                 </div>
@@ -152,7 +152,7 @@ export function Login({
                     <Label htmlFor="login-password" className="text-slate-700 font-medium">Contraseña</Label>
                     <button
                       type="button"
-                      className="cursor-pointer text-sm text-blue-600 hover:text-blue-700 underline-offset-4 hover:underline"
+                      className="cursor-pointer text-sm text-emerald-600 hover:text-emerald-700 underline-offset-4 hover:underline"
                     >
                       ¿Olvidaste tu contraseña?
                     </button>
@@ -162,13 +162,13 @@ export function Login({
                     type="password"
                     value={loginForm.password}
                     onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
-                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                    className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
                     required
                   />
                 </div>
                 <Button
                   type="submit"
-                  className="w-full py-3 bg-blue-700 text-white font-medium shadow-lg shadow-blue-500/25 transition-all duration-200"
+                  className="w-full py-3 bg-emerald-700 text-white font-medium shadow-lg shadow-emerald-500/25 transition-all duration-200"
                   disabled={isLoading}
                 >
                   {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
@@ -185,7 +185,7 @@ export function Login({
                     placeholder="Juan Pérez"
                     value={signupForm.name}
                     onChange={(e) => setSignupForm({...signupForm, name: e.target.value})}
-                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                    className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
                     required
                   />
                 </div>
@@ -197,7 +197,7 @@ export function Login({
                     placeholder="email@camioneros.com"
                     value={signupForm.email}
                     onChange={(e) => setSignupForm({...signupForm, email: e.target.value})}
-                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                    className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
                     required
                   />
                 </div>
@@ -208,7 +208,7 @@ export function Login({
                     type="password"
                     value={signupForm.password}
                     onChange={(e) => setSignupForm({...signupForm, password: e.target.value})}
-                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                    className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
                     required
                   />
                 </div>
@@ -219,13 +219,13 @@ export function Login({
                     type="password"
                     value={signupForm.confirmPassword}
                     onChange={(e) => setSignupForm({...signupForm, confirmPassword: e.target.value})}
-                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                    className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
                     required
                   />
                 </div>
                 <Button
                   type="submit"
-                  className="w-full py-3 bg-blue-700 text-white font-medium shadow-lg shadow-blue-500/25 transition-all duration-200"
+                  className="w-full py-3 bg-emerald-700 text-white font-medium shadow-lg shadow-emerald-500/25 transition-all duration-200"
                   disabled={isLoading}
                 >
                   {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
@@ -239,7 +239,7 @@ export function Login({
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="cursor-pointer text-blue-600 bg-bluee-600 hover:text-blue-700 font-medium underline-offset-4 hover:underline"
+                className="cursor-pointer text-emerald-600 bg-bluee-600 hover:text-emerald-700 font-medium underline-offset-4 hover:underline"
               >
                 {isLogin ? "Crear cuenta" : "Iniciar sesión"}
               </button>

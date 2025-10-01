@@ -98,7 +98,7 @@ export const getColumns = (
           <div className="flex justify-center">
             <div
               className={`cursor-pointer px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:opacity-80 ${statusStyle[row.original.status]} min-w-[140px] text-center`}
-              onClick={() => onStatusClick ? onStatusClick(row.original) : updateEnterpriseStatus(row.original.id)}
+              onClick={() => updateEnterpriseStatus(row.original.id)}
               title="Click para gestionar estado en detalle"
             >
               {formatted}

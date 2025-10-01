@@ -1,14 +1,13 @@
 import { useEnterprise } from "../../../shared/context/EnterpriseContext"
 import { getColumns } from "../hooks/columns"
-import { useState, type FC, type SVGProps } from "react"
-import { isInspectionOverdue, sortWithOverdueFirst, getOverdueCount } from "../../../shared/utils/overdueEnterprises"
+import { useState, useMemo, type FC, type SVGProps } from "react"
+import { sortWithOverdueFirst, getOverdueCount } from "../../../shared/utils/overdueEnterprises"
 import AlertIcon from '../../../icons/svg/alert.svg?react';
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
 import { AnimatePresence } from "framer-motion";
 import { DialogAddInspection } from "../../../shared/components/ui/DialogAddInspection";
 import { type IFormInput } from "../../../shared/hooks/useFormEnterprises";
 import { Link, useNavigate } from "react-router-dom";
-
 
 type Icons = {
   iconSVG: FC<SVGProps<SVGSVGElement>>;
@@ -22,8 +21,6 @@ export const TableInfo = () => {
   const navigate = useNavigate()
   const { enterprise, updateEnterpriseStatus, formatStatus, deleteEnterprise } = useEnterprise()
   const [globalFilter, setGlobalFilter] = useState("")
-  const [pageIndex, setPageIndex] = useState(0)
-  const [pageSize, setPageSize] = useState(9)
   const [editingEnterprise, setEditingEnterprise] = useState<IFormInput | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
@@ -41,29 +38,34 @@ export const TableInfo = () => {
     navigate('/inspecciones')
   }
 
-  // Sort enterprises to show overdue ones first
-  const sortedEnterprises = sortWithOverdueFirst(enterprise);
+  // Sort enterprises to show overdue ones first - memoize to prevent infinite loops
+  const sortedEnterprises = useMemo(() => sortWithOverdueFirst(enterprise), [enterprise]);
+
+  // Memoize columns to prevent recreation on every render
+  const columns = useMemo(
+    () => getColumns(updateEnterpriseStatus, formatStatus, handleEditEnterprise, handleDeleteEnterprise, handleStatusClick),
+    [updateEnterpriseStatus, formatStatus, handleEditEnterprise, handleDeleteEnterprise, handleStatusClick]
+  );
 
   const table = useReactTable({
     data: sortedEnterprises,
-    columns: getColumns(updateEnterpriseStatus, formatStatus, handleEditEnterprise, handleDeleteEnterprise, handleStatusClick),
+    columns,
     state: {
       globalFilter,
-      pagination: { pageSize, pageIndex }
     },
     onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: updater => {
-      const newState = typeof updater === "function" ? updater({ pageIndex, pageSize }) : updater
-      setPageIndex(newState.pageIndex)
-      setPageSize(newState.pageSize)
-    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 9,
+      }
+    }
   })
-
   const currentRows = table.getRowModel().rows;
   const currentOverdueCount = getOverdueCount(currentRows.map(row => row.original));
+
 
   return (
     <AnimatePresence mode="popLayout">
@@ -91,7 +93,7 @@ export const TableInfo = () => {
         <div className="flex justify-between items-center mb-6 flex-shrink-0">
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-bold text-slate-800 ml-2">Inspecciones</h2>
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative">
@@ -100,12 +102,12 @@ export const TableInfo = () => {
                 placeholder="Buscar empresas..."
                 value={globalFilter ?? ""}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="w-64 pl-4 pr-4 py-2.5 bg-white border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 text-sm"
+                className="w-64 pl-4 pr-4 py-2.5 bg-white border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 text-sm"
               />
             </div>
             <button
               onClick={() => setIsEditDialogOpen(true)}
-              className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium text-sm shadow-lg shadow-blue-500/25 hover:shadow-blue-600/30 transition-all duration-300"
+              className="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-medium text-sm shadow-lg shadow-emerald-500/25 hover:shadow-emerald-600/30 transition-all duration-300"
             >
               + Nueva Inspección
             </button>
@@ -114,8 +116,8 @@ export const TableInfo = () => {
               className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200/60 rounded-xl transition-all duration-300 group text-sm font-medium text-slate-700"
             >
               <span>Ver todas</span>
-              <div className="w-4 h-4 bg-slate-100 rounded-full flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                <span className="text-xs group-hover:text-blue-600">→</span>
+              <div className="w-4 h-4 bg-slate-100 rounded-full flex items-center justify-center group-hover:bg-emerald-100 transition-colors">
+                <span className="text-xs group-hover:text-emerald-600">→</span>
               </div>
             </Link>
           </div>
@@ -178,7 +180,7 @@ export const TableInfo = () => {
                 Anterior
               </button>
               <div className="px-4 py-2 text-sm font-medium text-slate-700 bg-white rounded-lg border border-slate-200/60">
-                {pageIndex + 1} de {table.getPageCount()}
+                Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
               </div>
               <button
                 onClick={() => table.nextPage()}

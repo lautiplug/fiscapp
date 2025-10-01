@@ -7,7 +7,8 @@ interface enterpriseSkeletonHeader {
   title: string,
   inspectionsCount: number,
   lastDate: string
-  averagePercentage: number
+  currentMonthCount: number
+  previousMonthCount: number
   inspectionStatus: string
 }
 
@@ -17,7 +18,6 @@ export const useGetEnterprisesHeader = () => {
   const { enterprise } = useEnterprise()
   const {
     currentMonthStats,
-    getPercentageChange,
     previousMonthStats,
   } = useGetMonthlyStats()
 
@@ -26,30 +26,24 @@ export const useGetEnterprisesHeader = () => {
       title: 'Esperando información',
       inspectionsCount: enterprise?.filter((i: any) => i.status === 'waiting').length,
       lastDate: 'Último mes',
-      averagePercentage: getPercentageChange(
-        currentMonthStats[enterpriseStatus.waiting],
-        previousMonthStats[enterpriseStatus.waiting]
-      ),
+      currentMonthCount: currentMonthStats[enterpriseStatus.waiting],
+      previousMonthCount: previousMonthStats[enterpriseStatus.waiting],
       inspectionStatus: 'Esperando información'
     },
     {
       title: 'Completadas',
       inspectionsCount: enterprise?.filter((i: any) => i.status === 'completed').length,
       lastDate: 'Último mes',
-      averagePercentage: getPercentageChange(
-        currentMonthStats[enterpriseStatus.completed],
-        previousMonthStats[enterpriseStatus.completed]
-      ),
+      currentMonthCount: currentMonthStats[enterpriseStatus.completed],
+      previousMonthCount: previousMonthStats[enterpriseStatus.completed],
       inspectionStatus: 'Completada'
     },
     {
       title: 'No completadas',
       inspectionsCount: enterprise?.filter((i: any) => i.status === 'uncompleted').length,
       lastDate: 'Último mes',
-      averagePercentage: getPercentageChange(
-        currentMonthStats[enterpriseStatus.uncompleted],
-        previousMonthStats[enterpriseStatus.uncompleted]
-      ),
+      currentMonthCount: currentMonthStats[enterpriseStatus.uncompleted],
+      previousMonthCount: previousMonthStats[enterpriseStatus.uncompleted],
       inspectionStatus: 'No completada'
     }
   ];

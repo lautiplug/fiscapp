@@ -1,11 +1,12 @@
 // ReminderContext.tsx
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import { useAddReminders } from "../hooks/useAddReminders";
 
 const ReminderContext = createContext<ReturnType<typeof useAddReminders> | null>(null);
 
 export const ReminderProvider = ({ children }: { children: React.ReactNode }) => {
-  const value = useAddReminders();
+  const hookValue = useAddReminders();
+  const value = useMemo(() => hookValue, [hookValue.reminder]);
   return <ReminderContext.Provider value={value}> {children} </ReminderContext.Provider>;
 };
 

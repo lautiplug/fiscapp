@@ -2,7 +2,7 @@ import { DialogTitle } from "@radix-ui/react-dialog"
 import { Button } from "../../../components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "../../../components/ui/dialog"
 import { type SubmitHandler } from "react-hook-form"
-import { useAddReminders, type Reminder } from "../../hooks/useAddReminders"
+import { type Reminder } from "../../hooks/useAddReminders"
 import { useRemindersContext } from "../../context/RemindersContext"
 import { useEffect } from "react"
 
@@ -14,15 +14,8 @@ interface DialogReminderProps {
 }
 
 export const DialogAddReminder = ({ editData, trigger, open, onOpenChange }: DialogReminderProps) => {
-  const { addReminder, updateReminder } = useRemindersContext()
+  const { addReminder, updateReminder, register, handleSubmit, errors, reset } = useRemindersContext()
   const isEditing = !!editData
-
-  const {
-    register,
-    handleSubmit,
-    errors,
-    reset,
-  } = useAddReminders({ mode: "onChange" })
 
   // Pre-populate form when editing
   useEffect(() => {
@@ -51,7 +44,7 @@ export const DialogAddReminder = ({ editData, trigger, open, onOpenChange }: Dia
       )}
       {!trigger && (
         <DialogTrigger asChild>
-          <Button variant="outline" className="cursor-pointer text-gray-700 border-gray-300 font-bold text-md hover:bg-blue-700"> Añadir + </Button>
+          <Button variant="outline" className="cursor-pointer text-gray-700 border-gray-300 font-bold text-md hover:bg-emerald-700 hover:text-white"> Añadir + </Button>
         </DialogTrigger>
       )}
       <DialogContent className="sm:w-[600px]">
@@ -67,8 +60,16 @@ export const DialogAddReminder = ({ editData, trigger, open, onOpenChange }: Dia
             <option value="Media">Media</option>
             <option value="Alta">Alta</option>
           </select>
+          <label className="text-sm pb-2 pt-2 font-bold text-emerald-800">Cuando querés ser recordado? (  día / mes / año )</label>
+          <input
+            type="date"
+            className="border border-emerald-200 p-2 rounded-md focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+            {...register("date", {
+              required: "Este campo es obligatorio.",
+            })}
+          />
           <p className="text-red-500">{errors.priority?.message}</p>
-          <button className="p-2 bg-blue-700 text-white mt-5 rounded-md cursor-pointer" type="submit">
+          <button className="p-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white mt-5 rounded-md cursor-pointer transition-all" type="submit">
             {isEditing ? 'Guardar cambios' : 'Agregar'}
           </button>
         </form>

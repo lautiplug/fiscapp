@@ -27,7 +27,7 @@ export const TablesPage = () => {
                   {/* #TODO MOSTRAR SECCIONALES BY FILTER*/}
                   <button
                     onClick={() => ExportService.exportSheet1(enterprise)}
-                    className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-xs font-medium"
+                    className="px-3 py-2 bg-blue-100 text-emerald-700 rounded-lg hover:bg-blue-200 transition-colors text-xs font-medium"
                   >
                     Convertir a Excel
                   </button>
@@ -324,7 +324,7 @@ export const TablesPage = () => {
                   key={sheet.id}
                   onClick={() => setActiveSheet(sheet.id)}
                   className={`cursor-pointer flex items-center py-2 px-2 text-xs font-bold transition-colors border-b-2 ${activeSheet === sheet.id
-                    ? 'border-blue-600 text-blue-600 bg-blue-50/50'
+                    ? 'border-emerald-600 text-emerald-600 bg-blue-50/50'
                     : 'border-transparent text-slate-600 hover:text-slate-800 hover:border-slate-300 hover:bg-slate-50/50'
                     }`}
                 >
@@ -333,7 +333,7 @@ export const TablesPage = () => {
               ))}
             </nav>
             <div className="grid grid-cols-1 gap-4 px-4 py-2">
-              <select className="text-sm cursor-pointer w-full px-3 h-7 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select className="text-sm cursor-pointer w-full px-3 h-7 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 <option value="">Todas las zonas</option>
                 <option value="avellaneda">Avellaneda</option>
                 <option value="quilmes">Quilmes</option>

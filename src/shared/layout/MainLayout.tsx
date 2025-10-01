@@ -12,7 +12,7 @@ interface MainLayoutProps {
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="w-full h-screen flex bg-gradient-to-br from-slate-50 via-slate-50 to-blue-50/30">
+    <div className="w-full h-screen flex bg-gradient-to-br from-slate-50 via-slate-50 to-emerald-50/30">
 
       {/* Sidebar */}
       <aside className="w-56 flex-shrink-0">
@@ -39,8 +39,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             </div>
           </div>
 
-          <div className="bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-200/50 rounded-2xl border border-white/50">
-            <div className="p-2">
+          <div className="bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-200/50 rounded-2xl border border-white/50 flex flex-col overflow-hidden">
+            <div className="p-2 flex-1 flex flex-col min-h-0">
               <ReminderProvider>
                 <Reminders />
               </ReminderProvider>

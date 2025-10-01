@@ -27,30 +27,28 @@ export const InspectionsManaging = () => {
                   {insp.title}
                 </h3>
                 <div className="flex items-center gap-1.5">
-                  {insp.averagePercentage > 0
+                  {insp.currentMonthCount > insp.previousMonthCount
                     ? <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-200/50">
                         <ArrowUp width={'14px'} height={'14px'} className="stroke-emerald-600"/>
-                        <span className="text-xs font-semibold">{insp.averagePercentage}%</span>
+                        <span className="text-xs font-semibold">{insp.currentMonthCount} este mes</span>
                       </div>
-                    : insp.averagePercentage === 0
-                      ? <div className="flex items-center gap-1.5 bg-orange-50 text-orange-700 px-2.5 py-1 rounded-lg border border-orange-200/50">
-                          <span className="text-xs font-semibold">{insp.averagePercentage}%</span>
+                    : insp.currentMonthCount === insp.previousMonthCount
+                      ? <div className="flex items-center gap-1.5 bg-slate-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200/50">
+                          <span className="text-xs font-semibold">{insp.currentMonthCount} este mes</span>
                         </div>
                       : <div className="flex items-center gap-1.5 bg-red-50 text-red-700 px-2.5 py-1 rounded-lg border border-red-200/50">
                           <ArrowDown width={'14px'} height={'14px'} className="stroke-red-600"/>
-                          <span className="text-xs font-semibold">{insp.averagePercentage}%</span>
+                          <span className="text-xs font-semibold">{insp.currentMonthCount} este mes</span>
                         </div>
                   }
                 </div>
               </div>
 
               <div className="flex items-baseline gap-2 mb-2">
-                <h2 className="text-3xl font-bold text-slate-800">
+                <h2 className="text-4xl font-bold text-slate-800">
                   {insp.inspectionsCount.toString().padStart(2, '0')}
                 </h2>
               </div>
-
-              <p className="text-sm text-slate-500 font-medium">Empresas registradas</p>
             </div>
           ))
         }

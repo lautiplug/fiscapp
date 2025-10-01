@@ -14,7 +14,10 @@ export const useGetMonthlyStats = () => {
     const targetMonth = new Date(now.getFullYear(), now.getMonth() - monthOffset, 1)
 
     return data.reduce((acc, item) => {
-      const itemDate = new Date(item.date)
+      // Parse date as local date to avoid timezone issues
+      const [year, month, day] = item.date.split('-').map(Number)
+      const itemDate = new Date(year, month - 1, day)
+
       const sameMonth =
         itemDate.getMonth() === targetMonth.getMonth() &&
         itemDate.getFullYear() === targetMonth.getFullYear()
@@ -34,15 +37,14 @@ export const useGetMonthlyStats = () => {
   const currentMonthStats = getMonthlyStats(enterprise, 0)
   const previousMonthStats = getMonthlyStats(enterprise, 1)
 
-  const getPercentageChange = (current: number, previous: number) => {
-    if (previous === 0) return current > 0 ? 100 : 0
-    return Math.round(((current - previous) / previous) * 100)
+  const getDifference = (current: number, previous: number) => {
+    return previous - current
   }
 
   return {
     currentMonthStats,
     previousMonthStats,
-    getPercentageChange
+    getDifference
   }
 
 }
